@@ -32,13 +32,11 @@ if (servicesList && content?.services?.items) {
   });
 }
 
-document.querySelectorAll('[data-contact-link]').forEach((link) => {
-  const type = link.dataset.contactLink;
-  const value = content?.contact?.[type];
-  if (!value) return;
-  link.querySelector('strong').textContent = value;
-  link.href = type === 'phone' ? `tel:${value.replace(/[^+\d]/g, '')}` : type === 'email' ? `mailto:${value}` : `https://t.me/${value.replace('@', '')}`;
-});
+const contactLinks = document.querySelector('#contact-links');
+if (contactLinks) {
+  const contacts = content?.contact?.items || [];
+  contactLinks.innerHTML = contacts.map((item) => `<a href="${item.href || '#'}"><span>${item.label}</span><strong>${item.value}</strong></a>`).join('');
+}
 
 menuToggle?.addEventListener('click', () => {
   const isOpen = siteNav.classList.toggle('is-open');
