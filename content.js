@@ -27,7 +27,12 @@
       text: 'Контактные данные сейчас временные. Перед публикацией заменим их на подтверждённые реквизиты компании.',
       phone: '+7 999 000-00-00',
       email: 'hello@volokno.example',
-      telegram: '@volokno_example'
+      telegram: '@volokno_example',
+      items: [
+        { label: 'Телефон', value: '+7 999 000-00-00', href: 'tel:+79990000000' },
+        { label: 'Email', value: 'hello@volokno.example', href: 'mailto:hello@volokno.example' },
+        { label: 'Telegram', value: '@volokno_example', href: 'https://t.me/volokno_example' }
+      ]
     }
   };
 
@@ -36,7 +41,9 @@
   window.getVoloknoContent = function () {
     try {
       const saved = localStorage.getItem(window.VOLOKNO_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : defaults;
+      const value = saved ? JSON.parse(saved) : defaults;
+      if (!value.contact.items?.length) value.contact.items = defaults.contact.items;
+      return value;
     } catch (error) {
       return defaults;
     }
