@@ -27,7 +27,7 @@
     document.querySelector('#service-fields').innerHTML = draft.services.items.map((item, index) => `
       <div class="service-editor">
         <div class="card-index">УСЛУГА ${String(index + 1).padStart(2, '0')}</div>
-        <h3>${item.name || 'Новая услуга'}</h3>
+        <div class="service-editor-heading"><h3>${item.name || 'Новая услуга'}</h3><button class="remove-service" type="button" data-remove-service="${index}" aria-label="Удалить услугу">Удалить</button></div>
         <label>Название<input data-service-field="${index}.name" value="${escapeHtml(item.name)}" /></label>
         <label>Описание<textarea data-service-field="${index}.description" rows="3">${escapeHtml(item.description)}</textarea></label>
         <label>Цена или условие<input data-service-field="${index}.price" value="${escapeHtml(item.price)}" /></label>
@@ -56,6 +56,20 @@
   };
 
   document.querySelectorAll('[data-tab], [data-tab-jump]').forEach((button) => button.addEventListener('click', () => showPanel(button.dataset.tab || button.dataset.tabJump)));
+  document.querySelector('#add-service').addEventListener('click', () => {
+    draft.services.items.push({ name: '', description: '', price: 'По запросу' });
+    render();
+    markChanged();
+    document.querySelector('#service-fields .service-editor:last-child input')?.focus();
+  });
+  document.querySelector('#service-fields').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-remove-service]');
+    if (!button) return;
+    if (draft.services.items.length === 1) { status.textContent = 'Должна остаться хотя бы одна услуга'; status.style.color = '#b34a3c'; return; }
+    draft.services.items.splice(Number(button.dataset.removeService), 1);
+    render();
+    markChanged();
+  });
   document.querySelector('#save-button').addEventListener('click', () => {
     localStorage.setItem(window.VOLOKNO_STORAGE_KEY, JSON.stringify(draft));
     status.textContent = 'Изменения опубликованы на этом устройстве';
