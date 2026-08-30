@@ -31,48 +31,48 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow">ВОЛС / монтаж / сервис</p>
-          <h1 id="hero-title">Связь должна работать. Мы знаем, как её восстановить.</h1>
-          <p class="hero-lead">Монтаж, диагностика и ремонт волоконно-оптических линий для домов, предприятий и инфраструктурных объектов.</p>
+          <h1 id="hero-title" data-content="hero.title">Связь должна работать. Мы знаем, как её восстановить.</h1>
+          <p class="hero-lead" data-content="hero.lead">Монтаж, диагностика и ремонт волоконно-оптических линий для домов, предприятий и инфраструктурных объектов.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#contacts">Обсудить задачу</a>
             <a class="button button-quiet" href="tel:+79990000000">Позвонить специалисту</a>
           </div>
-          <div class="hero-note"><span class="signal-line" aria-hidden="true"></span><span>Работаем по согласованному плану, без лишних этапов</span></div>
+          <div class="hero-note"><span class="signal-line" aria-hidden="true"></span><span data-content="hero.note">Работаем по согласованному плану, без лишних этапов</span></div>
         </div>
         <div class="hero-media">
-          <img src="hero-fiber.png" alt="Подготовка волоконно-оптического кабеля к сварке" />
-          <div class="media-caption"><span>Точная работа с каждой жилой</span></div>
+          <img src="public/hero-fiber.png" alt="Подготовка волоконно-оптического кабеля к сварке" data-content-image="hero.image" />
+          <div class="media-caption"><span data-content="hero.caption">Точная работа с каждой жилой</span></div>
         </div>
       </section>
 
       <section class="service-intro section" id="services" aria-labelledby="services-title">
         <div class="section-heading">
           <p class="eyebrow">Что мы делаем</p>
-          <h2 id="services-title">От первого сигнала до готовой линии</h2>
+          <h2 id="services-title" data-content="services.title">От первого сигнала до готовой линии</h2>
         </div>
-        <p class="section-summary">Подключаем, проверяем и возвращаем в работу оптические линии. Вы получаете понятный результат и рекомендации по дальнейшей эксплуатации.</p>
+        <p class="section-summary" data-content="services.summary">Подключаем, проверяем и возвращаем в работу оптические линии. Вы получаете понятный результат и рекомендации по дальнейшей эксплуатации.</p>
       </section>
 
       <section class="services-list" aria-label="Список услуг">
-        <article class="service-row">
+        <article class="service-row" data-service="0">
           <span class="service-index">01</span>
-          <div><h3>Монтаж ВОЛС</h3><p>Прокладка кабеля, подготовка трассы, монтаж муфт и коммутационных элементов.</p></div>
-          <span class="service-time">Срок зависит от объекта</span>
+          <div><h3 data-service-field="name">Монтаж ВОЛС</h3><p data-service-field="description">Прокладка кабеля, подготовка трассы, монтаж муфт и коммутационных элементов.</p></div>
+          <span class="service-time" data-service-field="price">Срок зависит от объекта</span>
         </article>
-        <article class="service-row">
+        <article class="service-row" data-service="1">
           <span class="service-index">02</span>
-          <div><h3>Диагностика и измерения</h3><p>Поиск повреждений и потерь с помощью рефлектометра и измерительного оборудования.</p></div>
-          <span class="service-time">Выезд по запросу</span>
+          <div><h3 data-service-field="name">Диагностика и измерения</h3><p data-service-field="description">Поиск повреждений и потерь с помощью рефлектометра и измерительного оборудования.</p></div>
+          <span class="service-time" data-service-field="price">Выезд по запросу</span>
         </article>
-        <article class="service-row">
+        <article class="service-row" data-service="2">
           <span class="service-index">03</span>
-          <div><h3>Сварка оптических волокон</h3><p>Точная сварка, укладка в кассеты и проверка качества соединений.</p></div>
-          <span class="service-time">От одного соединения</span>
+          <div><h3 data-service-field="name">Сварка оптических волокон</h3><p data-service-field="description">Точная сварка, укладка в кассеты и проверка качества соединений.</p></div>
+          <span class="service-time" data-service-field="price">От одного соединения</span>
         </article>
-        <article class="service-row">
+        <article class="service-row" data-service="3">
           <span class="service-index">04</span>
-          <div><h3>Ремонт и восстановление</h3><p>Локализуем неисправность, восстанавливаем линию и фиксируем причину сбоя.</p></div>
-          <span class="service-time">Срочный выезд возможен</span>
+          <div><h3 data-service-field="name">Ремонт и восстановление</h3><p data-service-field="description">Локализуем неисправность, восстанавливаем линию и фиксируем причину сбоя.</p></div>
+          <span class="service-time" data-service-field="price">Срочный выезд возможен</span>
         </article>
       </section>
 
@@ -80,8 +80,8 @@
         <div class="approach-visual" aria-hidden="true"><span class="fiber-loop"></span><span class="fiber-loop fiber-loop-two"></span><span class="fiber-node"></span></div>
         <div class="approach-copy">
           <p class="eyebrow">Наш подход</p>
-          <h2 id="approach-title">Сначала понимаем объект. Потом делаем работу.</h2>
-          <p>Оптика не любит догадок. Перед началом уточняем схему, состояние линии и ограничения площадки. После работ передаём результат и рекомендации простым языком.</p>
+          <h2 id="approach-title" data-content="approach.title">Сначала понимаем объект. Потом делаем работу.</h2>
+          <p data-content="approach.text">Оптика не любит догадок. Перед началом уточняем схему, состояние линии и ограничения площадки. После работ передаём результат и рекомендации простым языком.</p>
           <div class="approach-points">
             <div><strong>01</strong><span>Осмотр и постановка задачи</span></div>
             <div><strong>02</strong><span>Измерения и план работ</span></div>
@@ -109,12 +109,13 @@
       </section>
 
       <section class="contact section" id="contacts" aria-labelledby="contact-title">
-        <div><p class="eyebrow">Контакты</p><h2 id="contact-title">Опишите задачу. Мы ответим по делу.</h2><p>Контактные данные сейчас временные. Перед публикацией заменим их на подтверждённые реквизиты компании.</p></div>
-        <div class="contact-links"><a href="tel:+79990000000"><span>Телефон</span><strong>+7 999 000-00-00</strong></a><a href="mailto:hello@volokno.example"><span>Email</span><strong>hello@volokno.example</strong></a><a href="https://t.me/volokno_example"><span>Telegram</span><strong>@volokno_example</strong></a></div>
+        <div><p class="eyebrow">Контакты</p><h2 id="contact-title" data-content="contact.title">Опишите задачу. Мы ответим по делу.</h2><p data-content="contact.text">Контактные данные сейчас временные. Перед публикацией заменим их на подтверждённые реквизиты компании.</p></div>
+        <div class="contact-links"><a href="tel:+79990000000" data-contact-link="phone"><span>Телефон</span><strong data-content="contact.phone">+7 999 000-00-00</strong></a><a href="mailto:hello@volokno.example" data-contact-link="email"><span>Email</span><strong data-content="contact.email">hello@volokno.example</strong></a><a href="https://t.me/volokno_example" data-contact-link="telegram"><span>Telegram</span><strong data-content="contact.telegram">@volokno_example</strong></a></div>
       </section>
     </main>
 
     <footer class="site-footer"><div class="brand brand-footer"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>ВОЛОКНО</span></div><p>Монтаж и обслуживание волоконно-оптических линий связи.</p><span class="footer-note">© 2026</span></footer>
+    <script src="content.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
