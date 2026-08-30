@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e2630" />
+    <title>Панель управления | ВОЛОКНО</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="index.html"><span class="brand-mark"><i></i><i></i><i></i></span><span>ВОЛОКНО</span></a>
+        <div class="sidebar-kicker">Панель управления</div>
+        <nav class="admin-nav" aria-label="Разделы панели">
+          <button class="nav-item is-active" type="button" data-tab="overview"><span class="nav-number">01</span>Обзор</button>
+          <button class="nav-item" type="button" data-tab="hero"><span class="nav-number">02</span>Главный экран</button>
+          <button class="nav-item" type="button" data-tab="services"><span class="nav-number">03</span>Услуги и цены</button>
+          <button class="nav-item" type="button" data-tab="contacts"><span class="nav-number">04</span>Контакты</button>
+        </nav>
+        <a class="back-link" href="index.html">← Открыть сайт</a>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-header">
+          <div><p class="eyebrow">ВОЛОКНО / CONTENT DESK</p><h1 id="page-title">Обзор сайта</h1></div>
+          <div class="header-actions"><span class="save-status" id="save-status">Все изменения сохранены локально</span><button class="button button-primary" id="save-button" type="button">Сохранить изменения</button></div>
+        </header>
+
+        <section class="tab-panel is-visible" data-panel="overview">
+          <div class="overview-grid">
+            <article class="intro-card"><span class="card-index">01 / ЧТО ЗДЕСЬ</span><h2>Сайт под рукой.</h2><p>Редактируйте только то, что действительно меняется: текст, услуги, цены и контакты. Черновик хранится на этом устройстве до подключения общей базы.</p><div class="signal-line"></div></article>
+            <div class="metric-stack"><article class="metric-card"><span>Разделов</span><strong>04</strong><small>готовы к редактированию</small></article><article class="metric-card metric-card-accent"><span>Публикация</span><strong>LOCAL</strong><small>данные сохраняются в браузере</small></article></div>
+          </div>
+          <div class="section-head"><div><p class="eyebrow">Быстрый переход</p><h2>Что хотите изменить?</h2></div><p>После сохранения откройте сайт в соседней вкладке, чтобы проверить результат.</p></div>
+          <div class="quick-grid"><button type="button" data-tab-jump="hero"><span>02</span><b>Главный экран</b><small>Заголовок, описание, картинка</small>→</button><button type="button" data-tab-jump="services"><span>03</span><b>Услуги и цены</b><small>Названия, описания, стоимость</small>→</button><button type="button" data-tab-jump="contacts"><span>04</span><b>Контакты</b><small>Телефон, email, Telegram</small>→</button></div>
+        </section>
+
+        <section class="tab-panel" data-panel="hero"><div class="section-head"><div><p class="eyebrow">02 / Главный экран</p><h2>Первое впечатление</h2></div><p>Коротко объясните, чем вы занимаетесь и почему вам можно доверять.</p></div><div class="form-layout"><div class="form-card"><label>Заголовок<input data-field="hero.title" /></label><label>Описание<textarea data-field="hero.lead" rows="4"></textarea></label><label>Строка доверия<input data-field="hero.note" /></label><label>Подпись к изображению<input data-field="hero.caption" /></label><label>Alt-текст изображения<input data-field="hero.imageAlt" /><small>Помогает посетителям с экранными дикторами.</small></label></div><div class="image-card"><div class="image-preview" id="image-preview"><img alt="" /></div><label class="upload-label">Заменить изображение<input id="image-upload" type="file" accept="image/jpeg,image/png,image/webp" /><span>Выбрать файл</span></label><small>PNG, JPG или WebP. Лучше горизонтальное изображение до 2 МБ.</small></div></div></section>
+
+        <section class="tab-panel" data-panel="services"><div class="section-head"><div><p class="eyebrow">03 / Услуги и цены</p><h2>Что вы предлагаете</h2></div><p>Цена может быть конкретной («от 3 000 ₽») или форматом работы («по запросу»).</p></div><div class="form-card services-form"><label>Заголовок раздела<input data-field="services.title" /></label><label>Описание раздела<textarea data-field="services.summary" rows="3"></textarea></label><div id="service-fields"></div></div></section>
+
+        <section class="tab-panel" data-panel="contacts"><div class="section-head"><div><p class="eyebrow">04 / Контакты</p><h2>Как с вами связаться</h2></div><p>Эти данные появляются в шапке, блоке контактов и ссылках для звонка.</p></div><div class="form-card contact-form"><label>Заголовок<input data-field="contact.title" /></label><label>Описание<textarea data-field="contact.text" rows="3"></textarea></label><div class="two-columns"><label>Телефон<input data-field="contact.phone" type="tel" /></label><label>Email<input data-field="contact.email" type="email" /></label></div><label>Telegram<input data-field="contact.telegram" /></label></div></section>
+      </main>
+    </div>
+    <script src="content.js"></script><script src="admin.js"></script>
+  </body>
+</html>
+
