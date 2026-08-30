@@ -38,12 +38,39 @@
 
   window.VOLOKNO_DEFAULTS = defaults;
   window.VOLOKNO_STORAGE_KEY = 'volokno-content-v1';
+  const isRecord = (value) => value && typeof value === 'object' && !Array.isArray(value);
+  const text = (value, fallback = '') => typeof value === 'string' ? value.slice(0, 4000) : fallback;
+  const safeImage = (value) => typeof value === 'string' && (/^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value) || /^(public|assets)\/[a-z0-9._/-]+\.(png|jpe?g|webp)$/i.test(value));
+  const safeHref = (value) => {
+    if (typeof value !== 'string') return '#';
+    const candidate = value.trim().slice(0, 1000);
+    if (candidate === '#') return candidate;
+    try {
+      const url = new URL(candidate, window.location.href);
+      return ['https:', 'mailto:', 'tel:', 'tg:'].includes(url.protocol) ? url.href : '#';
+    } catch (error) { return '#'; }
+  };
+  const normalize = (raw) => {
+    if (!isRecord(raw)) return defaults;
+    const value = {
+      hero: { ...defaults.hero, ...(isRecord(raw.hero) ? raw.hero : {}) },
+      services: { ...defaults.services, ...(isRecord(raw.services) ? raw.services : {}) },
+      approach: { ...defaults.approach, ...(isRecord(raw.approach) ? raw.approach : {}) },
+      contact: { ...defaults.contact, ...(isRecord(raw.contact) ? raw.contact : {}) }
+    };
+    value.hero.title = text(value.hero.title, defaults.hero.title); value.hero.lead = text(value.hero.lead, defaults.hero.lead); value.hero.note = text(value.hero.note, defaults.hero.note); value.hero.caption = text(value.hero.caption, defaults.hero.caption); value.hero.imageAlt = text(value.hero.imageAlt, defaults.hero.imageAlt); value.hero.image = safeImage(value.hero.image) ? value.hero.image : defaults.hero.image;
+    value.services.title = text(value.services.title, defaults.services.title); value.services.summary = text(value.services.summary, defaults.services.summary);
+    value.services.items = Array.isArray(value.services.items) ? value.services.items.filter(isRecord).slice(0, 50).map((item) => ({ name: text(item.name, 'Новая услуга'), description: text(item.description), price: text(item.price, 'По запросу') })) : defaults.services.items;
+    value.approach.title = text(value.approach.title, defaults.approach.title); value.approach.text = text(value.approach.text, defaults.approach.text);
+    value.contact.title = text(value.contact.title, defaults.contact.title); value.contact.text = text(value.contact.text, defaults.contact.text);
+    value.contact.items = Array.isArray(value.contact.items) ? value.contact.items.filter(isRecord).slice(0, 30).map((item) => ({ label: text(item.label, 'Контакт'), value: text(item.value), href: safeHref(item.href) })) : defaults.contact.items;
+    return value;
+  };
+  window.VOLOKNO_SAFE_HREF = safeHref;
   window.getVoloknoContent = function () {
     try {
       const saved = localStorage.getItem(window.VOLOKNO_STORAGE_KEY);
-      const value = saved ? JSON.parse(saved) : defaults;
-      if (!value.contact.items?.length) value.contact.items = defaults.contact.items;
-      return value;
+      return normalize(saved ? JSON.parse(saved) : defaults);
     } catch (error) {
       return defaults;
     }
