@@ -38,6 +38,7 @@
 
   window.VOLOKNO_DEFAULTS = defaults;
   window.VOLOKNO_STORAGE_KEY = 'volokno-content-v1';
+  const allowedHttpsHosts = new Set(['t.me', 'telegram.me', 'wa.me', 'whatsapp.com', 'www.whatsapp.com', 'vk.com', 'm.vk.com', 'ok.ru', 'm.ok.ru', 'max.ru']);
   const isRecord = (value) => value && typeof value === 'object' && !Array.isArray(value);
   const text = (value, fallback = '') => typeof value === 'string' ? value.slice(0, 4000) : fallback;
   const safeImage = (value) => typeof value === 'string' && (/^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value) || /^(public|assets)\/[a-z0-9._/-]+\.(png|jpe?g|webp)$/i.test(value));
@@ -47,7 +48,9 @@
     if (candidate === '#') return candidate;
     try {
       const url = new URL(candidate, window.location.href);
-      return ['https:', 'mailto:', 'tel:', 'tg:'].includes(url.protocol) ? url.href : '#';
+      if (['mailto:', 'tel:', 'tg:'].includes(url.protocol)) return url.href;
+      if (url.protocol === 'https:' && (url.origin === window.location.origin || allowedHttpsHosts.has(url.hostname))) return url.href;
+      return '#';
     } catch (error) { return '#'; }
   };
   const normalize = (raw) => {
