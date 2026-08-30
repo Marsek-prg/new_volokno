@@ -32,7 +32,14 @@
         <label>Описание<textarea data-service-field="${index}.description" rows="3">${escapeHtml(item.description)}</textarea></label>
         <label>Цена или условие<input data-service-field="${index}.price" value="${escapeHtml(item.price)}" /></label>
       </div>`).join('');
-    document.querySelectorAll('[data-field], [data-service-field]').forEach((field) => field.addEventListener('input', onInput));
+    document.querySelector('#contact-fields').innerHTML = (draft.contact.items || []).map((item, index) => `
+      <div class="service-editor contact-editor">
+        <div class="service-editor-heading"><div class="card-index">КОНТАКТ ${String(index + 1).padStart(2, '0')}</div><button class="remove-service" type="button" data-remove-contact="${index}" aria-label="Удалить контакт">Удалить</button></div>
+        <label>Название поля<input data-contact-field="${index}.label" value="${escapeHtml(item.label)}" /></label>
+        <label>Значение<input data-contact-field="${index}.value" value="${escapeHtml(item.value)}" /></label>
+        <label>Ссылка или действие<input data-contact-field="${index}.href" value="${escapeHtml(item.href)}" placeholder="https://... или tel:+7..." /><small>Оставьте #, если это просто текст без перехода.</small></label>
+      </div>`).join('');
+    document.querySelectorAll('[data-field], [data-service-field], [data-contact-field]').forEach((field) => field.addEventListener('input', onInput));
   };
 
   const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
@@ -45,6 +52,10 @@
       draft.services.items[Number(index)][key] = field.value;
       const heading = field.closest('.service-editor')?.querySelector('h3');
       if (heading && key === 'name') heading.textContent = field.value || 'Новая услуга';
+    }
+    if (field.dataset.contactField) {
+      const [index, key] = field.dataset.contactField.split('.');
+      draft.contact.items[Number(index)][key] = field.value;
     }
     markChanged();
   };
@@ -67,6 +78,21 @@
     if (!button) return;
     if (draft.services.items.length === 1) { status.textContent = 'Должна остаться хотя бы одна услуга'; status.style.color = '#b34a3c'; return; }
     draft.services.items.splice(Number(button.dataset.removeService), 1);
+    render();
+    markChanged();
+  });
+  document.querySelector('#add-contact').addEventListener('click', () => {
+    draft.contact.items = draft.contact.items || [];
+    draft.contact.items.push({ label: '', value: '', href: '#' });
+    render();
+    markChanged();
+    document.querySelector('#contact-fields .contact-editor:last-child input')?.focus();
+  });
+  document.querySelector('#contact-fields').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-remove-contact]');
+    if (!button) return;
+    if (draft.contact.items.length === 1) { status.textContent = 'Должно остаться хотя бы одно контактное поле'; status.style.color = '#b34a3c'; return; }
+    draft.contact.items.splice(Number(button.dataset.removeContact), 1);
     render();
     markChanged();
   });
