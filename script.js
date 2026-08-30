@@ -16,13 +16,21 @@ document.querySelectorAll('[data-content-image]').forEach((element) => {
   if (content?.hero?.imageAlt) element.alt = content.hero.imageAlt;
 });
 
-document.querySelectorAll('[data-service]').forEach((row) => {
-  const item = content?.services?.items?.[Number(row.dataset.service)];
-  if (!item) return;
-  row.querySelector('[data-service-field="name"]').textContent = item.name;
-  row.querySelector('[data-service-field="description"]').textContent = item.description;
-  row.querySelector('[data-service-field="price"]').textContent = item.price;
-});
+const servicesList = document.querySelector('#services-list');
+if (servicesList && content?.services?.items) {
+  servicesList.innerHTML = content.services.items.map((item, index) => `
+    <article class="service-row" data-service="${index}">
+      <span class="service-index">${String(index + 1).padStart(2, '0')}</span>
+      <div><h3 data-service-field="name"></h3><p data-service-field="description"></p></div>
+      <span class="service-time" data-service-field="price"></span>
+    </article>`).join('');
+  servicesList.querySelectorAll('[data-service]').forEach((row) => {
+    const item = content.services.items[Number(row.dataset.service)];
+    row.querySelector('[data-service-field="name"]').textContent = item.name;
+    row.querySelector('[data-service-field="description"]').textContent = item.description;
+    row.querySelector('[data-service-field="price"]').textContent = item.price;
+  });
+}
 
 document.querySelectorAll('[data-contact-link]').forEach((link) => {
   const type = link.dataset.contactLink;
