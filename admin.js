@@ -88,18 +88,22 @@
     status.textContent = 'Изменения опубликованы на этом устройстве';
     status.style.color = '#318e77';
   });
-  document.querySelector('#image-upload').addEventListener('change', (event) => {
+  document.querySelector('#image-upload').addEventListener('change', async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
     const allowedTypes = new Set(['image/png', 'image/jpeg', 'image/webp']);
     if (file.size > 2 * 1024 * 1024 || !allowedTypes.has(file.type)) { status.textContent = 'Выберите PNG, JPG или WebP размером до 2 МБ'; status.style.color = '#b34a3c'; event.target.value = ''; return; }
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      const bytes = new Uint8Array(reader.result); const isPng = bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71; const isJpeg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255; const isWebp = bytes[0] === 82 && bytes[1] === 73 && bytes[2] === 70 && bytes[8] === 87 && bytes[9] === 69 && bytes[10] === 66 && bytes[11] === 80;
-      if (!(isPng || isJpeg || isWebp)) { status.textContent = 'Файл не похож на корректное изображение'; status.style.color = '#b34a3c'; event.target.value = ''; return; }
-      const encoded = new FileReader(); encoded.addEventListener('load', () => { draft.hero.image = encoded.result; preview.src = encoded.result; markChanged(); }); encoded.readAsDataURL(file);
-    });
-    reader.readAsArrayBuffer(file);
+    try {
+      const bitmap = await createImageBitmap(file);
+      const validDimensions = bitmap.width > 0 && bitmap.height > 0 && bitmap.width <= 8000 && bitmap.height <= 8000;
+      bitmap.close();
+      if (!validDimensions) throw new Error('invalid dimensions');
+      const encoded = new FileReader();
+      encoded.addEventListener('load', () => { draft.hero.image = encoded.result; preview.src = encoded.result; markChanged(); });
+      encoded.readAsDataURL(file);
+    } catch (error) {
+      status.textContent = 'Изображение не удалось корректно декодировать'; status.style.color = '#b34a3c'; event.target.value = '';
+    }
   });
   render();
 })();
