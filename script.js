@@ -18,24 +18,21 @@ document.querySelectorAll('[data-content-image]').forEach((element) => {
 
 const servicesList = document.querySelector('#services-list');
 if (servicesList && content?.services?.items) {
-  servicesList.innerHTML = content.services.items.map((item, index) => `
-    <article class="service-row" data-service="${index}">
-      <span class="service-index">${String(index + 1).padStart(2, '0')}</span>
-      <div><h3 data-service-field="name"></h3><p data-service-field="description"></p></div>
-      <span class="service-time" data-service-field="price"></span>
-    </article>`).join('');
-  servicesList.querySelectorAll('[data-service]').forEach((row) => {
-    const item = content.services.items[Number(row.dataset.service)];
-    row.querySelector('[data-service-field="name"]').textContent = item.name;
-    row.querySelector('[data-service-field="description"]').textContent = item.description;
-    row.querySelector('[data-service-field="price"]').textContent = item.price;
-  });
+  servicesList.replaceChildren(...content.services.items.map((item, index) => {
+    const row = document.createElement('article'); row.className = 'service-row';
+    const number = document.createElement('span'); number.className = 'service-index'; number.textContent = String(index + 1).padStart(2, '0');
+    const copy = document.createElement('div'); const name = document.createElement('h3'); name.textContent = item.name; const description = document.createElement('p'); description.textContent = item.description; copy.append(name, description);
+    const price = document.createElement('span'); price.className = 'service-time'; price.textContent = item.price; row.append(number, copy, price); return row;
+  }));
 }
 
 const contactLinks = document.querySelector('#contact-links');
 if (contactLinks) {
   const contacts = content?.contact?.items || [];
-  contactLinks.innerHTML = contacts.map((item) => `<a href="${item.href || '#'}"><span>${item.label}</span><strong>${item.value}</strong></a>`).join('');
+  contactLinks.replaceChildren(...contacts.map((item) => {
+    const link = document.createElement('a'); link.href = window.VOLOKNO_SAFE_HREF(item.href);
+    const label = document.createElement('span'); label.textContent = item.label; const value = document.createElement('strong'); value.textContent = item.value; link.append(label, value); return link;
+  }));
 }
 
 menuToggle?.addEventListener('click', () => {
