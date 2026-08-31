@@ -18,8 +18,8 @@ async def main() -> None:
     confirmation = getpass.getpass("Confirm password: ")
     if not username or not password:
         raise SystemExit("Username and password are required")
-    if len(password) < 12:
-        raise SystemExit("Password must contain at least 12 characters")
+    if len(password) < 5:
+        raise SystemExit("Password must contain at least 5 characters")
     if password != confirmation:
         raise SystemExit("Passwords do not match")
     async with SessionLocal() as db:

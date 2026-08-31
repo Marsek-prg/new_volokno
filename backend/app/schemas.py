@@ -82,7 +82,7 @@ class SiteContentPayload(BaseModel):
 
 class LoginPayload(BaseModel):
     username: str = Field(min_length=1, max_length=120)
-    password: str = Field(min_length=12, max_length=256)
+    password: str = Field(min_length=5, max_length=256)
 
 
 class AdminOut(BaseModel):
