@@ -60,4 +60,3 @@ Visitors arrive from search, recommendations, or direct links and usually need t
 - Provide visible keyboard focus states.
 - Preserve native details/summary interaction.
 - Support reduced motion and narrow mobile screens.
-

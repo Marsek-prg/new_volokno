@@ -6,4 +6,3 @@
     "build": "node -e \"console.log('Static site: no compilation required')\""
   }
 }
-
