@@ -1,0 +1,8 @@
+work/
+outputs/
+.impeccable/review/
+node_modules/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/

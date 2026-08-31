@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    volumes:
+      - uploads_data:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+  caddy:
+    image: caddy:2.9-alpine
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${DOMAIN:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./frontend:/srv/frontend:ro
+      - uploads_data:/data/uploads:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+volumes:
+  postgres_data:
+  uploads_data:
+  caddy_data:
+  caddy_config:
