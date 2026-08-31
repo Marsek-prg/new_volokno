@@ -33,9 +33,16 @@
   const showLogin = () => { $('#login-panel').hidden = false; $('#admin-content').hidden = true; };
   const showAdmin = () => { $('#login-panel').hidden = true; $('#admin-content').hidden = false; };
   const init = async () => {
-    try { await api('/api/auth/me'); showAdmin(); await load(); } catch (error) { if (error.status === 401) showLogin(); else { showLogin(); $('#login-error').textContent = 'Сервер пока недоступен. Попробуйте ещё раз.'; } }
+    try {
+      await api('/api/auth/me');
+      showAdmin();
+      try { await load(); } catch (error) { setStatus('Не удалось загрузить контент. Сессия сохранена, повторите позже.', '#b34a3c'); }
+    } catch (error) {
+      if (error.status === 401) showLogin();
+      else { showLogin(); $('#login-error').textContent = 'Сервер пока недоступен. Попробуйте ещё раз.'; }
+    }
   };
-  $('#login-form').addEventListener('submit', async (event) => { event.preventDefault(); $('#login-error').textContent = ''; const button = event.currentTarget.querySelector('button'); button.disabled = true; try { await api('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: $('#login-username').value.trim(), password: $('#login-password').value }) }); showAdmin(); await load(); event.currentTarget.reset(); } catch (error) { $('#login-error').textContent = error.status === 401 ? 'Неверный логин или пароль.' : 'Не удалось выполнить вход.'; } finally { button.disabled = false; } });
+  $('#login-form').addEventListener('submit', async (event) => { event.preventDefault(); $('#login-error').textContent = ''; const button = event.currentTarget.querySelector('button'); button.disabled = true; try { await api('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: $('#login-username').value.trim(), password: $('#login-password').value }) }); showAdmin(); await load(); event.currentTarget.reset(); } catch (error) { $('#login-error').textContent = error.status === 401 ? 'Неверный логин или пароль.' : error.status === 429 ? 'Слишком много попыток. Попробуйте позже.' : 'Не удалось выполнить вход.'; } finally { button.disabled = false; } });
   $('#logout-button').addEventListener('click', async () => { try { await api('/api/auth/logout', { method: 'POST' }); } finally { showLogin(); } });
   document.querySelectorAll('[data-tab], [data-tab-jump]').forEach((button) => button.addEventListener('click', () => showPanel(button.dataset.tab || button.dataset.tabJump)));
   $('#add-service').addEventListener('click', () => { if (draft.services.items.length >= 50) return setStatus('Можно добавить не более 50 услуг', '#b34a3c'); draft.services.items.push({ name: '', description: '', price: 'По запросу' }); render(); changed(); $('#service-fields .service-editor:last-child input')?.focus(); });
