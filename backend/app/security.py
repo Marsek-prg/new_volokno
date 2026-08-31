@@ -18,6 +18,17 @@ settings = get_settings()
 SESSION_COOKIE = "volokno_admin_session"
 
 
+def ensure_same_origin(request: Request) -> None:
+    origin = request.headers.get("origin")
+    if not origin:
+        return
+    forwarded_proto = request.headers.get("x-forwarded-proto", request.url.scheme).split(",")[0].strip()
+    forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", request.url.netloc)).split(",")[0].strip()
+    expected = f"{forwarded_proto}://{forwarded_host}"
+    if not hmac.compare_digest(origin.rstrip("/"), expected.rstrip("/")):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Недопустимый источник запроса")
+
+
 def hash_password(password: str) -> str:
     return password_hasher.hash(password)
 

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from PIL import Image, UnidentifiedImageError
+from PIL.Image import DecompressionBombError
 
 from ..config import get_settings
 from ..security import get_current_admin
@@ -26,7 +27,7 @@ async def upload_image(file: UploadFile = File(...), _admin=Depends(get_current_
             if image.format not in {"JPEG", "PNG", "WEBP"} or image.width > 8000 or image.height > 8000:
                 raise ValueError("unsupported image")
             image.verify()
-    except (UnidentifiedImageError, OSError, ValueError):
+    except (DecompressionBombError, UnidentifiedImageError, OSError, ValueError):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Файл не является корректным изображением") from None
     upload_dir = Path(settings.upload_dir).resolve()
     upload_dir.mkdir(parents=True, exist_ok=True)
