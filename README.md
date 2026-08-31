@@ -30,13 +30,13 @@ Vanilla HTML/CSS/JS сайт с небольшой CMS-панелью. Конт�
 1. Установите Docker Engine и Compose plugin.
 2. Выполните git clone репозитория и перейдите в каталог проекта.
 3. Скопируйте .env.example в .env.
-4. Задайте длинные случайные POSTGRES_PASSWORD и SESSION_SECRET, а в DOMAIN укажите домен.
+4. Создайте .env и задайте длинные случайные POSTGRES_PASSWORD и SESSION_SECRET, а в DOMAIN укажите домен.
 5. Направьте DNS A-запись домена на IP VPS.
 6. Запустите:
 
     docker compose up -d --build
 
-Caddy автоматически запросит HTTPS-сертификат для настоящего домена. PostgreSQL наружу не публикуется. Для локальной разработки оставляйте DOMAIN=http://localhost и ENVIRONMENT=development; для production укажите домен без протокола, например DOMAIN=volokno.ru.
+Caddy автоматически запросит HTTPS-сертификат для настоящего домена. PostgreSQL наружу не публикуется. Для локальной разработки оставляйте DOMAIN=http://localhost и ENVIRONMENT=development; для production используйте DOMAIN=example.ru и ENVIRONMENT=production. В production cookie авторизации получает флаг Secure.
 
 Обновление:
 
@@ -64,7 +64,7 @@ Volume uploads_data также следует регулярно копиров�
 
 ## Шрифты
 
-В frontend/public/fonts/README.md описаны ожидаемые лицензированные WOFF2-файлы для self-hosted Manrope и Space Mono. Бинарные шрифты намеренно не включены. Пока HTML сохраняет текущую зависимость от Google Fonts; после добавления файлов подключите @font-face и удалите ссылки Google Fonts.
+В frontend/public/fonts/README.md описаны ожидаемые лицензированные WOFF2-файлы для self-hosted Manrope и Space Mono. Бинарные файлы в проекте отсутствуют и не скачивались. CSS использует локальные @font-face с системным fallback: положите лицензированные файлы в эту папку, после чего шрифты начнут работать без внешних запросов.
 
 ## Структура
 

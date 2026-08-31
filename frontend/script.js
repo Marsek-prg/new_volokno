@@ -17,6 +17,10 @@
       const link = document.createElement('a'); link.href = window.VOLOKNO_SAFE_HREF(item.href);
       const label = document.createElement('span'); label.textContent = item.label; const value = document.createElement('strong'); value.textContent = item.value; link.append(label, value); return link;
     }));
+    const phone = content.contact.items.find((item) => /телефон/i.test(item.label));
+    document.querySelectorAll('[data-contact-phone]').forEach((link) => {
+      if (phone) { link.href = window.VOLOKNO_SAFE_HREF(phone.href); link.textContent = phone.value; }
+    });
   };
   try {
     const response = await fetch('/api/content', { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
